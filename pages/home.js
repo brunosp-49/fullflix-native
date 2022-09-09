@@ -1,10 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Button, FlatList, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { api } from '../api/axios';
+import { idDetail } from '../redux/slice';
 
 export default function Home({navigation}) {
 const [movies, setMovies] = useState()
+const dispatch = useDispatch();
 
     useEffect(()=>{
         api.get(`https://api.themoviedb.org/3/movie/popular?api_key=ac57c76aa7b66833535f4b4aabe014f6&language=pt-BR&page=1`)
@@ -16,7 +19,8 @@ const [movies, setMovies] = useState()
         })
     },[])
 
-    const GoToDetail = () =>{
+    const GoToDetail = async(id) =>{
+      await dispatch(idDetail(id))
       navigation.navigate("Detail")
     }
 
@@ -24,7 +28,7 @@ const [movies, setMovies] = useState()
     <View style={styles.container}> 
         {!movies ? null :
             <FlatList data={movies} keyExtractor={item => item.id} renderItem={({item})=>(
-                <TouchableOpacity style={styles.grid} onPress={()=>GoToDetail()}>
+                <TouchableOpacity style={styles.grid} key={item.id} onPress={()=>GoToDetail(item.id)}>
                   <View style={styles.subContainer}>
                     <Image style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`}}/>
                     <Text style={styles.title}>{item.title}</Text>

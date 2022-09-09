@@ -4,13 +4,21 @@ import { api } from "../api/axios";
 
 
 const initialState ={
-    valor: {}
+    valor: {},
+    idDetail: 0
 }
 
 export const countSlice = createSlice({
     name: "data",
     initialState,
-    reducers: {},
+    reducers: {
+      returnHome: (state) => {
+        state.valor = {}
+    },
+    idDetail: (state, action) => {
+      state.idDetail = action.payload
+  },
+    },
     extraReducers: (builder) => {
         builder.addCase(getMovieDetails.fulfilled, (state, action) => {
             state.valor = action.payload;
@@ -19,6 +27,9 @@ export const countSlice = createSlice({
 });
 
 export const data = (state) => state.data.valor;
+export const id = (state) => state.data.idDetail;
+
+export const { returnHome, idDetail } = countSlice.actions;
 
 export const getMovieDetails = createAsyncThunk(
     "movie/getById",
