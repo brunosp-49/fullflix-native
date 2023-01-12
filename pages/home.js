@@ -28,10 +28,11 @@ const dispatch = useDispatch();
     <View style={styles.container}> 
         {!movies ? null :
             <FlatList data={movies} keyExtractor={item => item.id} renderItem={({item})=>(
+              
                 <TouchableOpacity style={styles.grid} key={item.id} onPress={()=>GoToDetail(item.id)}>
                   <View style={styles.subContainer}>
                     <Image style={styles.image} source={{uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`}}/>
-                    <Text style={styles.title}>{item.title}</Text>
+                    <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
                   </View>
                 </TouchableOpacity>
             )}/>
@@ -76,5 +77,6 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontSize: 18,
+    width: '70%'
   }
 });
